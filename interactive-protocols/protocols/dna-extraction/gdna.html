@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gDNA Extraction Protocol (Interactive)</title>
+<link rel="stylesheet" href="../../shared-assets/style.css">
+</head>
+<body>
+
+<!--
+Code licensed MIT.
+Protocol content licensed CC BY-NC 4.0 (no commercial use).
+Author: Liam Cremona, 2025
+-->
+
+<h1>Genomic DNA Extraction</h1>
+<p class="note">Minimal interactive protocol — expand sections and tick steps. Progress auto-saves in your browser.</p>
+
+<div class="row">
+  <button id="expandAll">Expand all</button>
+  <button id="collapseAll">Collapse all</button>
+  <button id="resetChecks">Reset checkboxes</button>
+</div>
+
+<details open>
+  <summary>1. Culture Growth</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-1">
+      <span>Grow one colony in 5 mL LB at 37&nbsp;°C for 5 hours.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>2. Harvest Cells</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-2">
+      <span>Spin 3 mL at 10,000 rpm for 2 min (several spins to pellet 3 mL total). You can freeze the pellet at this point.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>3. Resuspend</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-3">
+      <span>Resuspend pellet in 0.5 mL TES.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>4. Lysozyme Treatment</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-4">
+      <span>Add 50 µL of 10 mg/mL lysozyme; incubate at 37&nbsp;°C for 20 min. Meanwhile, pre-heat 2× XS to 65&nbsp;°C to re-dissolve.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>5. Add 2× XS Buffer</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-5">
+      <span>Add equal volume (0.5 mL) of pre-heated 2× XS.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>6. Incubate</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-6">
+      <span>Incubate at 65&nbsp;°C for 1–2 hours.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>7. Chill</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-7">
+      <span>Vortex 10 s, then place on ice for 30 min. (You can freeze here and continue later.)</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>8. Clarify Lysate</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-8">
+      <span>Spin at 14,000 rpm for 10 min.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>9. Isopropanol Precipitation</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-9">
+      <span>Carefully remove supernatant, split equally into two fresh tubes; add 1 volume isopropanol to each. Sit 5 min, then invert to mix.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>10. DNA Collection</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-10">
+      <span>White chromosomal DNA should appear. Combine both pellets into one tube; add 500 µL 70% EtOH.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>11. Wash & Dry</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-11">
+      <span>Invert to wash, spin down, then air-dry ~20–30 min.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>12. Resuspend</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-12">
+      <span>Resuspend DNA in 250 µL MQ water.</span>
+    </label>
+  </div>
+</details>
+
+<details>
+  <summary>13. Storage</summary>
+  <div class="content">
+    <label class="step">
+      <input type="checkbox" id="gdna-13">
+      <span>Store chromosomal DNA at −20&nbsp;°C.</span>
+    </label>
+  </div>
+</details>
+
+<p class="note">Tip: Progress is saved per browser/device. In Notion embeds, storage lives on the page’s domain (<code>github.io</code>).</p>
+
+<script>
+  const KEY_PREFIX = "gdna-checkbox:"; // change per-protocol to avoid collisions
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll('input[type="checkbox"][id^="gdna-"]').forEach(cb => {
+      const saved = localStorage.getItem(KEY_PREFIX + cb.id);
+      if (saved !== null) cb.checked = saved === "true";
+      cb.addEventListener("change", () => {
+        localStorage.setItem(KEY_PREFIX + cb.id, cb.checked);
+      });
+    });
+  });
+
+  document.getElementById("resetChecks").addEventListener("click", () => {
+    if (!confirm("Reset all checkboxes?")) return;
+    document.querySelectorAll('input[type="checkbox"][id^="gdna-"]').forEach(cb => {
+      cb.checked = false;
+      localStorage.removeItem(KEY_PREFIX + cb.id);
+    });
+  });
+
+  document.getElementById("expandAll").addEventListener("click", () => {
+    document.querySelectorAll("details").forEach(d => d.open = true);
+  });
+  document.getElementById("collapseAll").addEventListener("click", () => {
+    document.querySelectorAll("details").forEach(d => d.open = false);
+  });
+</script>
+
+<footer>
+  <br>
+  <a href="../../index.html">← Back to protocol index</a>
+  <p>Code: MIT • Content: CC BY-NC 4.0 • © 2025 Liam Cremona</p>
+</footer>
+
+</body>
+</html>
