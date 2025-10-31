@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>gDNA Extraction Protocol (Interactive)</title>
+<title>gDNA Extraction </title>
 <link rel="stylesheet" href="../../shared-assets/style.css">
 </head>
 <body>
@@ -30,8 +30,13 @@ Author: Liam Cremona, 2025
       <input type="checkbox" id="gdna-1">
       <span>Grow one colony in 5 mL LB at 37&nbsp;°C for 5 hours.</span>
     </label>
+
+    <!-- 5-hour timer -->
+    <button onclick="startTimer('timer-5h', 5 * 60)">Start 5-hour timer</button>
+    <span id="timer-5h" style="margin-left:10px; font-weight:bold;"></span>
   </div>
 </details>
+
 
 <details>
   <summary>2. Harvest Cells</summary>
@@ -189,6 +194,31 @@ Author: Liam Cremona, 2025
   <a href="../../index.html">← Back to protocol index</a>
   <p>Code: MIT • Content: CC BY-NC 4.0 • © 2025 Liam Cremona</p>
 </footer>
+
+<script>
+// Reusable countdown timer
+function startTimer(displayId, minutes) {
+  let totalSeconds = minutes * 60;
+
+  const display = document.getElementById(displayId);
+
+  const interval = setInterval(() => {
+    let hours = Math.floor(totalSeconds / 3600);
+    let mins = Math.floor((totalSeconds % 3600) / 60);
+    let secs = totalSeconds % 60;
+
+    display.textContent = `${hours}h ${mins}m ${secs.toString().padStart(2,"0")}s`;
+
+    if (totalSeconds <= 0) {
+      clearInterval(interval);
+      display.textContent = "Done ✅";
+      alert("5-hour incubation complete!");
+    }
+
+    totalSeconds--;
+  }, 1000);
+}
+</script>
 
 </body>
 </html>
